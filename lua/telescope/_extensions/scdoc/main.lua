@@ -6,25 +6,20 @@ local action_state = require'telescope.actions.state'
 
 local uv = vim.loop
 local scnvim = require'scnvim'
-local scnvim_utils = require'scnvim.utils'
+local help = require'scnvim.help'
+local path_sep = require'scnvim.utils'.path_sep
 
 local M = {}
 
 local function generate(callback)
-  scnvim.eval('SCDoc.helpTargetDir', function(res)
-    local path = res .. scnvim_utils.path_sep .. 'docmap.json'
-    local stat = uv.fs_stat(path)
-    assert(stat, 'Could not find docmap.json')
-    local fd = uv.fs_open(path, 'r', 0)
-    local size = stat.size
-    local file = uv.fs_read(fd, size, 0)
-    local ok, result = pcall(vim.fn.json_decode, file)
-    uv.fs_close(fd)
+  scnvim.eval('SCDoc.helpTargetDir', function(dir)
+    local path = dir .. path_sep .. 'docmap.json'
+    local ok, docmap = pcall(help.get_docmap, path)
     if not ok then
-      error(result)
+      error(docmap)
     end
     local entries = {}
-    for k, v in pairs(result) do
+    for k, v in pairs(docmap) do
       entries[#entries + 1] = v
     end
     table.sort(entries, function(a, b)
