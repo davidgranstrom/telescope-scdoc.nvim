@@ -14,7 +14,7 @@ A SuperCollider documentation picker.
 Install the plugin
 
 ```lua
-use { 'davidgranstrom/telescope-scdoc' }
+use { 'davidgranstrom/telescope-scdoc.nvim' }
 ```
 
 Load the extension *after* the call to `telescope.setup{}`
