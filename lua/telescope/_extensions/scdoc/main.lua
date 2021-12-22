@@ -45,9 +45,17 @@ end
 local function format_entry(entry)
   local lines = {}
   table.insert(lines, '# ' .. entry.title)
-  table.insert(lines, '## ' .. entry.summary)
   table.insert(lines, '')
-  table.insert(lines, 'categories: ' .. entry.categories)
+  table.insert(lines, entry.summary)
+  table.insert(lines, '')
+  table.insert(lines, 'categories: ')
+  if entry.categories then
+    local categories = vim.split(entry.categories, ',', {trimempty = true})
+    for _, s in ipairs(categories) do
+      s = vim.trim(s)
+      table.insert(lines, '  - ' .. s)
+    end
+  end
   table.insert(lines, 'superclasses:')
   if entry.superclasses then
     for _, s in ipairs(entry.superclasses) do
