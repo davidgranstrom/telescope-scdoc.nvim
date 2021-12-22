@@ -2,7 +2,7 @@
 
 A SuperCollider documentation picker.
 
-![telescope-scdoc.nvim](https://user-images.githubusercontent.com/672917/147111453-3216ad9d-2595-459c-84a8-82ce24e00d91.png)
+![telescope-scdoc.nvim](https://user-images.githubusercontent.com/672917/147115784-a39df09f-d4a0-4f89-900d-12c71cff0db2.png)
 
 ## Requirements
 
