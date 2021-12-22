@@ -3,8 +3,12 @@ local finders = require'telescope.finders'
 local conf = require'telescope.config'.values
 local actions = require'telescope.actions'
 local action_state = require'telescope.actions.state'
+local previewers = require'telescope.previewers'
+local ts_utils = require'telescope.utils'
+local defaulter = ts_utils.make_default_callable
 
 local uv = vim.loop
+local api = vim.api
 local scnvim = require'scnvim'
 local help = require'scnvim.help'
 local path_sep = require'scnvim.utils'.path_sep
@@ -38,6 +42,45 @@ local function get_entries(callback)
   end
 end
 
+local function format_entry(entry)
+  local lines = {}
+  table.insert(lines, '# ' .. entry.title)
+  table.insert(lines, '## ' .. entry.summary)
+  table.insert(lines, '')
+  table.insert(lines, 'categories: ' .. entry.categories)
+  table.insert(lines, 'superclasses:')
+  if entry.superclasses then
+    for _, s in ipairs(entry.superclasses) do
+      table.insert(lines, '  - ' .. s)
+    end
+  end
+  local related = 'related:'
+  if entry.related then
+    for _, s in ipairs(entry.related) do
+      table.insert(lines, '  - ' .. s)
+    end
+  end
+  table.insert(lines, 'installed: ' .. entry.installed)
+  return lines
+end
+
+local summary = defaulter(function(opts)
+  return previewers.new_buffer_previewer{
+    title = 'summary',
+    define_preview = function(self, entry)
+      local bufnr = self.state.bufnr
+      if self.state.bufname ~= entry.value.title then
+        require'telescope.previewers.utils'.highlighter(bufnr, 'markdown')
+        api.nvim_win_set_option(self.state.winid, 'wrap', true)
+        api.nvim_buf_set_lines(bufnr, 0, 0, true, format_entry(entry.value))
+      end
+    end,
+    get_buffer_by_name = function(_, entry)
+      return entry.value.title
+    end,
+  }
+end)
+
 M.list = function(opts)
   opts = opts or {}
   get_entries(function(entries)
@@ -48,19 +91,15 @@ M.list = function(opts)
       finder = finders.new_table{
         results = entries,
         entry_maker = function(entry)
-          local max_len = 24
-          local path = entry.title:sub(1, max_len)
-          if #path < max_len then
-            path = path .. string.rep(' ', max_len - #path)
-          end
           return {
             value = entry,
-            display = string.format('%s | %s', path, entry.summary),
+            display = entry.title,
             ordinal = entry.title,
           }
         end
       },
       sorter = conf.file_sorter(opts),
+      previewer = summary.new(opts),
       attach_mappings = function(prompt_bufnr, map)
         actions.select_default:replace(function()
           actions.close(prompt_bufnr)
