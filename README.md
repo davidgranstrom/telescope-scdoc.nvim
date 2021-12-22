@@ -2,6 +2,8 @@
 
 A SuperCollider documentation picker.
 
+![telescope-scdoc.nvim](https://user-images.githubusercontent.com/672917/147111453-3216ad9d-2595-459c-84a8-82ce24e00d91.png)
+
 ## Requirements
 
 * scnvim
