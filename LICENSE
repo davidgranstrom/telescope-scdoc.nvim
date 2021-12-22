@@ -1,47 +1,3 @@
-# Telescope scdoc
-
-A SuperCollider documentation picker.
-
-## Requirements
-
-* scnvim
-* telescope
-
-## Installation
-
-Install the plugin
-
-```lua
-use { 'davidgranstrom/telescope-scdoc' }
-```
-
-Load the extension *after* the call to `telescope.setup{}`
-
-```lua
-require'telescope'.load_extension('scdoc')
-```
-
-## Usage
-
-**Note** scnvim needs to be started (`:SCNvimStart`) before you can browse the documentation.
-
-Use the Telescope command.
-
-```vim
-:Telescope scdoc
-```
-
-Or call the function.
-
-```vim
-:lua require'telescope'.extensions.scdoc.scdoc()
-```
-
-## License
-
-Same as Telescope.
-
-```text
 MIT License
 
 Copyright (c) 2021 David Granström
@@ -63,4 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-```
