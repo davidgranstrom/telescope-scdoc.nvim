@@ -25,7 +25,9 @@ local function generate(callback)
     end
     local entries = {}
     for k, v in pairs(docmap) do
-      entries[#entries + 1] = v
+      if k:sub(1, 7) == 'Classes' then
+        entries[#entries + 1] = v
+      end
     end
     table.sort(entries, function(a, b)
       return a.path:lower() < b.path:lower()
@@ -74,7 +76,7 @@ end
 
 local summary = defaulter(function(opts)
   return previewers.new_buffer_previewer{
-    title = 'summary',
+    title = 'Summary',
     define_preview = function(self, entry)
       local bufnr = self.state.bufnr
       if self.state.bufname ~= entry.value.title then
