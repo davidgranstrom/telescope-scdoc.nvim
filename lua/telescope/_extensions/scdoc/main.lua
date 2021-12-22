@@ -10,6 +10,7 @@ local help = require'scnvim.help'
 local path_sep = require'scnvim.utils'.path_sep
 
 local M = {}
+local doc_map = nil
 
 local function generate(callback)
   scnvim.eval('SCDoc.helpTargetDir', function(dir)
@@ -30,8 +31,8 @@ local function generate(callback)
 end
 
 local function get_entries(callback)
-  if M.doc_map then
-    callback(M.doc_map)
+  if doc_map then
+    callback(doc_map)
   else
     generate(callback)
   end
@@ -40,7 +41,8 @@ end
 M.list = function(opts)
   opts = opts or {}
   get_entries(function(entries)
-    M.doc_map = entries
+    -- cache the entries
+    doc_map = entries
     pickers.new(opts, {
       prompt_title = 'scdoc',
       finder = finders.new_table{
