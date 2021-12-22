@@ -58,18 +58,21 @@ local function format_entry(entry)
       table.insert(lines, '  - ' .. s)
     end
   end
+  table.insert(lines, '')
   table.insert(lines, 'superclasses:')
   if entry.superclasses then
     for _, s in ipairs(entry.superclasses) do
       table.insert(lines, '  - ' .. s)
     end
   end
-  local related = 'related:'
+  table.insert(lines, '')
+  table.insert(lines, 'related:')
   if entry.related then
     for _, s in ipairs(entry.related) do
       table.insert(lines, '  - ' .. s)
     end
   end
+  table.insert(lines, '')
   table.insert(lines, 'installed: ' .. entry.installed)
   return lines
 end
