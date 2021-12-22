@@ -1,4 +1,4 @@
-# Telescope scdoc
+# telescope-scdoc.nvim
 
 A SuperCollider documentation picker.
 
