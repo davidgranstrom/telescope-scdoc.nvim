@@ -11,7 +11,7 @@ local uv = vim.loop
 local api = vim.api
 local scnvim = require'scnvim'
 local help = require'scnvim.help'
-local path_sep = require'scnvim.utils'.path_sep
+local path_sep = '/'
 
 local M = {}
 local doc_map = nil
@@ -117,7 +117,7 @@ M.list = function(opts)
         actions.select_default:replace(function()
           actions.close(prompt_bufnr)
           local selection = action_state.get_selected_entry()
-          vim.fn['scnvim#help#open_help_for'](selection.value.title)
+          help.open_help_for(selection.value.title)
         end)
         return true
       end,
