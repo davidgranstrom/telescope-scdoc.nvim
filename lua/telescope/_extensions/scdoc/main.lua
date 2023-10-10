@@ -9,17 +9,15 @@ local defaulter = ts_utils.make_default_callable
 
 local uv = vim.loop
 local api = vim.api
-local scnvim = require'scnvim'
-local help = require'scnvim.help'
 local path_sep = '/'
 
 local M = {}
 local doc_map = nil
 
 local function generate(callback)
-  scnvim.eval('SCDoc.helpTargetDir', function(dir)
+  require"scnvim".eval('SCDoc.helpTargetDir', function(dir)
     local path = dir .. path_sep .. 'docmap.json'
-    local ok, docmap = pcall(help.get_docmap, path)
+    local ok, docmap = pcall(require"scnvim.help".get_docmap, path)
     if not ok then
       error(docmap)
     end
@@ -117,7 +115,7 @@ M.list = function(opts)
         actions.select_default:replace(function()
           actions.close(prompt_bufnr)
           local selection = action_state.get_selected_entry()
-          help.open_help_for(selection.value.title)
+          require"scnvim.help".open_help_for(selection.value.title)
         end)
         return true
       end,
